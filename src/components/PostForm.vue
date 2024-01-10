@@ -8,21 +8,21 @@
         type="text"
         placeholder="Title"
       /> -->
-    <input
+    <!-- <input
       :value="post.title"
       @input="post.title = $event.target.value"
       class="input"
       type="text"
       placeholder="Title"
-    />
+    /> -->
+    <input v-model="post.title" class="input" type="text" placeholder="Title" />
     <input
-      :value="post.body"
-      @input="post.body = $event.target.value"
+      v-model="post.body"
       class="input"
       type="text"
       placeholder="Description"
     />
-    <button class="btn">Create</button>
+    <button class="btn" @click="createPost">Create</button>
   </form>
 </template>
 
@@ -35,6 +35,16 @@ export default {
         body: "",
       },
     };
+  },
+  methods: {
+    createPost() {
+      this.post.id = Date.now();
+      this.$emit("create", this.post, "second param", "3 param");
+      this.post = {
+        title: "",
+        body: "",
+      };
+    },
   },
 };
 </script>
