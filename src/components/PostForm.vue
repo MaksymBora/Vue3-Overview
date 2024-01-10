@@ -22,7 +22,12 @@
       type="text"
       placeholder="Description"
     />
-    <button class="btn" @click="createPost">Create</button>
+    <my-button
+      class="btn"
+      @click="createPost"
+      style="align-self: flex-end; margin-top: 15px"
+      >Create</my-button
+    >
   </form>
 </template>
 
