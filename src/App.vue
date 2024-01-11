@@ -1,9 +1,8 @@
 <template>
   <div class="app">
     <h1>Page with Posts</h1>
-    <my-button @click="fetchPosts">Receive Posts</my-button>
+    <!-- <my-button @click="fetchPosts">Receive Posts</my-button> -->
 
-    <!-- <input type="text" v-model.number="modificatorValue" /> -->
     <my-button @click="showDialog" style="margin: 15px 0"
       >Create Post</my-button
     >
@@ -12,7 +11,8 @@
       <post-form @create="createPost" />
     </my-dialog>
 
-    <post-list :posts="posts" @remove="removePost" />
+    <post-list :posts="posts" @remove="removePost" v-if="!isPostsLoading" />
+    <div v-else>Loading....</div>
   </div>
 </template>
 
@@ -29,14 +29,9 @@ export default {
 
   data() {
     return {
-      posts: [
-        { id: 1, title: "JavaScript", body: "Description of post!" },
-        { id: 2, title: "JavaScript 2", body: "Description of post 2!" },
-        { id: 3, title: "JavaScript 3", body: "Description of post 3!" },
-        { id: 4, title: "JavaScript 3", body: "Description of post 3!" },
-      ],
+      posts: [],
       dialogVisible: false,
-      modificatorValue: "",
+      isPostsLoading: false,
     };
   },
   methods: {
@@ -55,14 +50,22 @@ export default {
     },
     async fetchPosts() {
       try {
-        const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts?_limit=10"
-        );
-        console.log(response);
+        this.isPostsLoading = true;
+        setTimeout(async () => {
+          const response = await axios.get(
+            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          );
+          this.posts = response.data;
+          this.isPostsLoading = false;
+        }, 1000);
       } catch (e) {
         console.log(e);
+      } finally {
       }
     },
+  },
+  mounted() {
+    this.fetchPosts();
   },
 };
 </script>
