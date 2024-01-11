@@ -1,39 +1,17 @@
-<!-- <template>
-  <div>Hello!</div>
-  <div>
-    <div>
-      <button @click="addLike">Like</button>
-      <button @click="addDisLike">Dislike</button>
-    </div>
-    Q-ty likes: <strong>{{ likes }}</strong> Q-ty dis-likes:
-    <strong>{{ dislikes }}</strong>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      likes: 0,
-      dislikes: 0,
-    };
-  },
-  methods: {
-    addLike() {
-      this.likes += 1;
-    },
-    addDisLike() {
-      this.dislikes += 1;
-    },
-  },
-};
-</script>
-
-<style></style> -->
-
 <template>
   <div class="app">
-    <post-form @create="createPost" />
+    <h1>Page with Posts</h1>
+    <my-button @click="fetchPosts">Receive Posts</my-button>
+
+    <!-- <input type="text" v-model.number="modificatorValue" /> -->
+    <my-button @click="showDialog" style="margin: 15px 0"
+      >Create Post</my-button
+    >
+
+    <my-dialog v-model:show="dialogVisible">
+      <post-form @create="createPost" />
+    </my-dialog>
+
     <post-list :posts="posts" @remove="removePost" />
   </div>
 </template>
@@ -41,6 +19,7 @@ export default {
 <script>
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
+import axios from "axios";
 
 export default {
   components: {
@@ -56,6 +35,8 @@ export default {
         { id: 3, title: "JavaScript 3", body: "Description of post 3!" },
         { id: 4, title: "JavaScript 3", body: "Description of post 3!" },
       ],
+      dialogVisible: false,
+      modificatorValue: "",
     };
   },
   methods: {
@@ -64,9 +45,23 @@ export default {
     // },
     createPost(post) {
       this.posts.push(post);
+      this.dialogVisible = false;
     },
     removePost(post) {
       this.posts = this.posts.filter((p) => p.id !== post.id);
+    },
+    showDialog() {
+      this.dialogVisible = true;
+    },
+    async fetchPosts() {
+      try {
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts?_limit=10"
+        );
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

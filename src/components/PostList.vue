@@ -1,6 +1,6 @@
 <template>
   <div v-if="posts.length > 0">
-    <h3>List of Users</h3>
+    <h3>List of Posts</h3>
     <post-item
       v-for="post in posts"
       :post="post"
