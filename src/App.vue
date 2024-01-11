@@ -76,11 +76,6 @@ export default {
   box-sizing: border-box;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-}
-
 .app {
   padding: 20px;
 }
